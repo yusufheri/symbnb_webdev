@@ -43,10 +43,7 @@ class AdType extends AbstractType
             ->add('introduction', TextType::class, $this->getConfiguration("Introduction", "Donnez une description globale de l'annonce"))
             ->add('content', TextareaType::class, $this->getConfiguration("Description détaillée", "Tapez une description qui donne envie de passer nuit chez vous","tinymce"))            
             ->add('city', TextType::class, $this->getConfiguration("Ville", "Tapez la ville où se trouve votre logement"))
-            ->add('address', TextareaType::class, $this->getConfiguration("Adresse complète", "Tapez une adresse précise et claire de votre appartement en location","tinymce"))
             ->add('rooms', IntegerType::class, $this->getConfiguration("Pièces", "Indiquez le nombre de pièces"))            
-            ->add('bedrooms', IntegerType::class, $this->getConfiguration("Chambres", "Indiquez le nombre de chambre"))
-            ->add('floor', IntegerType::class, $this->getConfiguration("Etage", "Indiquez le nombre de niveau d'étage"))
             ->add('price', MoneyType::class, $this->getConfiguration("Prix par nuit", "Indiquez le prix que vous voulez pour une nuit"))
             ->add('lat', HiddenType::class)
             ->add('lng', HiddenType::class)
@@ -54,8 +51,7 @@ class AdType extends AbstractType
                 CollectionType::class, [                
                     'entry_type' => ImageType::class,
                     'allow_add' => true,
-                    'allow_delete' => true,
-                    'by_reference' => false              
+                    'allow_delete' => true             
                 ]);
     }
 

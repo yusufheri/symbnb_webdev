@@ -32,10 +32,7 @@ class AppFixtures extends Fixture
                 ->setContent($content)
                 ->setRooms(mt_rand(2, 5))
                 ->setPrice(mt_rand(100, 300))
-                ->setBedrooms(mt_rand(1,5))
-                ->setFloor(mt_rand(1,4))
                 ->setCity($city)
-                ->setAddress($address)
                 ->setLat($lat)
                 ->setLng($lng);
 

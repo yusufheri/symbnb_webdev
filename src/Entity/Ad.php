@@ -3,13 +3,19 @@
 namespace App\Entity;
 
 use Cocur\Slugify\Slugify;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\AdRepository")
  * @ORM\HasLifecycleCallbacks()
+ * @UniqueEntity(
+ *      fields={"title"},
+ *      message="Une autre annonce possède déjà ce titre, merci de modifier"
+ * )
  */
 class Ad
 {
@@ -22,6 +28,9 @@ class Ad
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Length(min=10, max=255, 
+     * minMessage="Le titre doit faire au moins 10 caractères",
+     * maxMessage="Le titre doit faire tout au plus 255 caractères")
      */
     private $title;
 
@@ -37,11 +46,13 @@ class Ad
 
     /**
      * @ORM\Column(type="text")
+     * @Assert\Length(min=20, minMessage="Votre introduction doit faire plus de 20 caractères")
      */
     private $introduction;
 
     /**
      * @ORM\Column(type="text")
+     * @Assert\Length(min=100, minMessage="Votre descrisption doit contenir au moins 100 caractères")
      */
     private $content;
 
@@ -52,6 +63,7 @@ class Ad
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Url()
      */
     private $coverImage;
 
@@ -66,29 +78,15 @@ class Ad
     private $modifiedAt;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Image", mappedBy="ad", cascade="all", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\Image", mappedBy="ad", orphanRemoval=true)
+     * @Assert\Valid()
      */
     private $images;
-
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $bedrooms;
-
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $floor;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
     private $city;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $address;
 
     /**
      * @ORM\Column(type="float", scale=4, precision=6)
@@ -264,12 +262,10 @@ class Ad
 
     public function addImage(Image $image): self
     {
-        //  if (!$this->images->contains($image)) {
-            var_dump($image);
+        if (!$this->images->contains($image)) {
             $this->images[] = $image;
-            //  $this->images->add($image);
             $image->setAd($this);
-        //  }
+        }
 
         return $this;
     }
@@ -287,30 +283,6 @@ class Ad
         return $this;
     }
 
-    public function getBedrooms(): ?int
-    {
-        return $this->bedrooms;
-    }
-
-    public function setBedrooms(int $bedrooms): self
-    {
-        $this->bedrooms = $bedrooms;
-
-        return $this;
-    }
-
-    public function getFloor(): ?int
-    {
-        return $this->floor;
-    }
-
-    public function setFloor(int $floor): self
-    {
-        $this->floor = $floor;
-
-        return $this;
-    }
-
     public function getCity(): ?string
     {
         return $this->city;
@@ -319,18 +291,6 @@ class Ad
     public function setCity(string $city): self
     {
         $this->city = $city;
-
-        return $this;
-    }
-
-    public function getAddress(): ?string
-    {
-        return $this->address;
-    }
-
-    public function setAddress(string $address): self
-    {
-        $this->address = $address;
 
         return $this;
     }

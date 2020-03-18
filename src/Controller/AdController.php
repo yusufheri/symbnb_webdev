@@ -41,7 +41,7 @@ class AdController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            //  dump($form);
+            dump($form);
             foreach($ad->getImages() as $image) {
                 $image->setAd($ad);
                 $manager->persist($image);
@@ -52,14 +52,47 @@ class AdController extends AbstractController
 
             $this->addFlash("success", "L'annonce <strong>".$ad->getTitle()."</strong> a bien été enregistrée");
 
-           /*  return $this->redirectToRoute('ads_show', [
+            return $this->redirectToRoute('ads_show', [
                 'slug' => $ad->getSlug()
-            ]); */
+            ]);
 
         }
 
         return $this->render('ad/new.html.twig', [
             'form' => $form->createView()
+        ]);
+    }
+
+    /**
+     * Permet d'afficher le formulaire d'étion d'une annonce
+     * @Route("/ads/{slug}/edit", name="ads_edit")
+     * @return Response
+     */
+    public function edit(Request $request, Ad $ad, EntityManagerInterface $manager) {
+        
+        $form = $this->createForm(AdType::class, $ad);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            dump($form);
+            foreach($ad->getImages() as $image) {
+                $image->setAd($ad);
+                $manager->persist($image);
+            }
+            
+            $manager->persist($ad);
+            $manager->flush();
+
+            $this->addFlash("success", "Les modifications apportées à l'annonce <strong>".$ad->getTitle()."</strong> ont bien été enregistrées");
+
+            return $this->redirectToRoute('ads_show', [
+                'slug'  => $ad->getSlug()               
+            ]);
+
+        }
+        return $this->render('ad/edit.html.twig', [
+            'form'  => $form->createView(),
+            'ad'    => $ad
         ]);
     }
 
