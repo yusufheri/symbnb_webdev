@@ -98,13 +98,19 @@ class Ad
      */
     private $lng;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="ads")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $author;
+
     public function __construct()
     {
         $this->images = new ArrayCollection();
         $this->lat = -5.125;
         $this->lng = 1.2356;
     }
-
+   
     /**
      * Permet d'initialiser le Slug
      * @ORM\PrePersist
@@ -315,6 +321,18 @@ class Ad
     public function setLng(float $lng): self
     {
         $this->lng = $lng;
+
+        return $this;
+    }
+
+    public function getAuthor(): ?User
+    {
+        return $this->author;
+    }
+
+    public function setAuthor(?User $author): self
+    {
+        $this->author = $author;
 
         return $this;
     }

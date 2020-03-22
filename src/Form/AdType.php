@@ -16,25 +16,8 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 
-class AdType extends AbstractType
+class AdType extends ApplicationType
 {
-    /**
-     * Permet d'avoir la configuration de base d'un champ
-     *
-     * @param string $label
-     * @param string $placeholder
-     * @return array
-     */
-    private function getConfiguration($label, $placeholder, $class = "") {
-        return [
-            'label' => $label,
-            'attr'  => [
-                'placeholder' => $placeholder,
-                'class' => $class
-            ]
-        ];
-    }
-
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
