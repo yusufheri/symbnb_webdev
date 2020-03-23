@@ -6,6 +6,7 @@ use App\Entity\Ad;
 use Faker\Factory;
 use App\Entity\User;
 use App\Entity\Image;
+use App\Entity\Role;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -20,6 +21,23 @@ class AppFixtures extends Fixture
     public function load(ObjectManager $manager)
     {
         $faker = Factory::create('FR-fr');  
+
+        $adminRole = new Role();
+        $adminRole->setTitle('ADMIN_ROLE');
+        $manager->persist($adminRole);
+
+        $adminUser = new User();
+        $adminUser
+                ->setLastName("Heri")
+                ->setFirstName("Yusuf")
+                ->setEmail("yusufheri64@gmail.com")
+                ->setPicture("https://previews.123rf.com/images/sommersby/sommersby1908/sommersby190800026/129073448-thin-line-hacker-or-coder-icon-on-a-grey-background.jpg")
+                ->setHash($this->passwordEncoder->encodePassword($adminUser, '12345678'))
+                ->setIntroduction($faker->sentence())
+                ->setDescription('<p>'. join('</p><p>', $faker->paragraphs(3)).'</p>')
+                ->addUserRole($adminRole)
+                ;
+        $manager->persist($adminUser);
         
         $users = [];
         $genres = ['male', 'female'];
@@ -48,11 +66,8 @@ class AppFixtures extends Fixture
 
             $users[] = $user;
         }
-       
-                
-        //  dump($users);
 
-        for ($i= 1; $i <= 6; $i++) {
+        for ($i= 1; $i <= 9; $i++) {
             $ad = new Ad();
 
             $title = $faker->sentence();
