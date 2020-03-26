@@ -3,6 +3,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\Ad;
+use App\Entity\Booking;
 use Faker\Factory;
 use App\Entity\User;
 use App\Entity\Image;
@@ -67,7 +68,7 @@ class AppFixtures extends Fixture
             $users[] = $user;
         }
 
-        for ($i= 1; $i <= 9; $i++) {
+        for ($i= 1; $i <= 18; $i++) {
             $ad = new Ad();
 
             $title = $faker->sentence();
@@ -90,6 +91,7 @@ class AppFixtures extends Fixture
                 ->setLng($lng)
                 ->setAuthor($user);
 
+            // Gestion des images associées à l'annonces
             for ($j = 1; $j <= mt_rand(2, 3); $j++) {
                 $image = new Image();
 
@@ -99,6 +101,32 @@ class AppFixtures extends Fixture
 
                 $manager->persist($image);
 
+            }
+
+            //Gestion des reservations
+            for($j= 0; $j <= mt_rand(0, 10); $j++){
+                $booking = new Booking();
+
+                $createdAt = $faker->dateTime('-6 months');
+                $startDate = $faker->dateTime('-3 months');
+                
+                $duration = mt_rand(3, 10);
+
+                $endDate = (clone $startDate)->modify("+ ".$duration." days");
+                $amount = $ad->getPrice() * $duration;
+                $booker = $users[mt_rand(0, count($users) - 1)];
+
+                $comment = $faker->paragraph();
+
+                $booking ->setCreatedAt($createdAt)
+                        ->setStartDate($startDate)
+                        ->setEndDate($endDate)
+                        ->setAmount($amount)
+                        ->setComment($comment)
+                        ->setBooker($booker)
+                        ->setAd($ad);
+
+                $manager->persist($booking);
             }
 
             $manager->persist($ad);

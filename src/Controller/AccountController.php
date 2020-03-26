@@ -10,6 +10,7 @@ use App\Form\PasswordUpdateType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
@@ -160,5 +161,15 @@ class AccountController extends AbstractController
         return $this->render('user/index.html.twig',[
             'user' => $this->getUser()
         ]);
+    }
+
+    /**
+     * Permet d'afficher les réservations de l'utilisateur en cours
+     * @Route("/account/bookings", name="account_bookings")
+     * @Security("is_granted('ROLE_USER')", message="Accès réfusé ! Vous devez vous connecter pour voir vos réservation")
+     * @return Response
+     */
+    public function bookings(){
+        return $this->render("account/bookings.html.twig");
     }
 }

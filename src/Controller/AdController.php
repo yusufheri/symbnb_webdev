@@ -44,7 +44,7 @@ class AdController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            dump($form);
+            //  dump($form);
             foreach($ad->getImages() as $image) {
                 $image->setAd($ad);
                 $manager->persist($image);
@@ -73,8 +73,7 @@ class AdController extends AbstractController
     /**
      * Permet d'afficher le formulaire d'étion d'une annonce
      * @Route("/ads/{slug}/edit", name="ads_edit")     * 
-     * @Security("is_granted('ROLE_USER') and user === ad.getAuthor()", message="Vous n'êtes pas le propriétaire de cette annonce, 
-     * vous ne pouvez pas la modifier")
+     * @Security("is_granted('ROLE_USER') and user === ad.getAuthor()", message="Vous n'êtes pas le propriétaire de cette annonce, vous ne pouvez pas la modifier")
      * @return Response
      */
     public function edit(Request $request, Ad $ad, EntityManagerInterface $manager) {

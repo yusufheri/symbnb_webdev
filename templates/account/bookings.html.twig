@@ -1,0 +1,50 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Mes réservations{% endblock %}
+
+{% block body %}
+
+<div class="container">
+    <h1>Mes réservations</h1>
+    
+   
+    {% if app.user.bookings|length > 0 %}
+        <div class="alert alert-info mt-5">
+            <p>Retrouvez ci-dessous toutes vos réservations passées et à venir</p>
+        </div>
+        {% for booking in app.user.bookings %}
+            {% set ad  = booking.ad %}
+            <div class="row mb-3 alert alert-light">
+                <div class="col-4">
+                    <img src="{{ ad.coverImage }}" alt="Photo de l'annonce {{ad.title}}" class="img-fluid">
+                </div>
+                <div class="col-8">
+                    <h4>{{ad.title}}</h4>
+                    <div class="row align-items-center">
+                        <div class="col">
+                            <p>
+                                Réservation <strong>n° {{ad.id}}</strong><br>
+                                Du {{ booking.startDate|date('d/m/Y') }} au {{ booking.endDate|date('d/m/Y') }} <br>
+                                Montant payé : <strong>{{ booking.amount }} &euro; </strong>                   
+                            </p>
+                        </div>
+                        <div class="col text-center">
+                            <a href="{{ path('booking_show', {'id':booking.id}) }}" class="btn btn-outline-primary">Plus d'informations</a>
+                        </div>
+                    </div>
+                
+                    
+                </div>
+            </div>            
+        {% endfor %}
+    {% else %}
+        <div class="alert alert-info">
+            <h1>Vous n'avez pas encore fait une réservation</h1>
+            <p>Rendez votre prochain séjour inoubliable en réservant une annonce auprès de nos meilleurs hôtes</p>
+            <a href="{{path('ads_index')}}" class="btn btn-success"><b>Voir nos meilleures annonces</b></a>
+        </div>
+    {% endif %}
+   
+</div>
+
+{% endblock %}

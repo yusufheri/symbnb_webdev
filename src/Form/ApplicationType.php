@@ -13,14 +13,14 @@ class ApplicationType extends AbstractType{
      * @param string $placeholder
      * @return array
      */
-    protected function getConfiguration($label, $placeholder, $class = "") {
-        return [
+    protected function getConfiguration($label, $placeholder, $options = []) {
+        return array_merge_recursive([
             'label' => $label,
             'attr'  => [
                 'placeholder' => $placeholder,
-                'class' => $class
+                //  'class' => $class
             ]
-        ];
+        ], $options);
     }
 
 }
