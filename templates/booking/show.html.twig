@@ -8,7 +8,7 @@
     {% set author = ad.author %}
 
     <div class="container">
-        <h1>Votre réservation (n°{{ booking.id }})</h1>
+        <h1 class="my-5">Votre réservation (n°{{ booking.id }})</h1>
 
         {% if app.request.query.get('success') %}
             <div class="alert alert-success">
@@ -58,8 +58,28 @@
                         </div>
                     </div>
                     {{ author.description|raw }}
-                    <a href="{{ path('user_show', {'slug':author.slug}) }}" class="btn btn-outline-primary">Plus d'infos  sur {{author.firstName}}</a>
-                </div>                    
+                    <a href="{{ path('user_show', {'slug':author.slug}) }}" class="btn btn-primary">Plus d'infos  sur {{author.firstName}}</a>
+                </div>   
+                <div class="alert alert-light" id="comment">
+                    <h2 class="alert-heading">Votre avis compte !</h2>
+                     
+                    {% if date() > (booking.endDate) %}
+                    {% set comment = booking.ad.commentFromAuthor(app.user) %}
+                        {% if comment is not null %}
+                            <blockquote>{{ comment.content }}</blockquote>
+                            <strong>Note : </strong>
+                            {% include "partials/rating.html.twig" with {'rating':comment.rating} %}
+                        {% else %}
+                            {{ form_start(form) }}
+                            {{ form_widget(form) }}
+                            <button type="submit" class="btn btn-success">Commenter</button>
+                            {{ form_end(form) }}
+                        {% endif %}                        
+
+                    {% else %}
+                        <p>vous ne pourrez pas noter cette annonce tant que votre voyage ne sera pas complet</p>
+                    {% endif %}
+                </div>              
             </div>
             <div class="col">
                 <div class="alert alert-light">
@@ -70,7 +90,7 @@
                     </h4>
                     <img src="{{ ad.coverImage }}" alt="Image de l'annonce {{ ad.title }}" class="img-fluid">
                     {{ ad.content | raw }}
-                    <a href="{{ path('ads_show', {'slug':ad.slug}) }}" class="btn btn-outline-primary">Plus d'informations</a>
+                    <a href="{{ path('ads_show', {'slug':ad.slug}) }}" class="btn btn-primary">Plus d'informations</a>
                 </div>
             </div>
         </div>

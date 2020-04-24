@@ -32,13 +32,15 @@ class Booking
 
     /**
      * @ORM\Column(type="datetime")
-     * @Assert\GreaterThan("today UTC", message="La date d'arrivée doit être ultérieure à la date d'aujourd'hui")
+     * @Assert\GreaterThan("today UTC", 
+     * message="La date d'arrivée doit être ultérieure à la date d'aujourd'hui", groups={"front"})
      */
     private $startDate;
 
     /**
      * @ORM\Column(type="datetime")
-     * @Assert\GreaterThan(propertyPath="startDate", message="La date de départ doit être plus éloignée que la date d'arrivée !")
+     * @Assert\GreaterThan(propertyPath="startDate", 
+     * message="La date de départ doit être plus éloignée que la date d'arrivée !")
      */
     private $endDate;
 
@@ -55,7 +57,7 @@ class Booking
     /**
      * @ORM\Column(type="text", nullable=true)
      */
-    private $comment;
+    private $comment;    
 
     public function isBookableDates(){
         // Récupérer les jours dont l'annonce est occupé
@@ -100,6 +102,7 @@ class Booking
     /**
      * Permet de générer la date de création & le montant à payer
      * @ORM\PrePersist
+     * @ORM\PreUpdate
      */
     public function prePersist(){
         if (empty($this->createdAt)){

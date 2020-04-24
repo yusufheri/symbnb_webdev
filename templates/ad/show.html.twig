@@ -11,9 +11,11 @@
         <h1>{{ ad.title }}</h1>
         <p>{{ ad.introduction }}</p>
         <p class="h2">
-            <strong>{{ ad.rooms }} pièces </strong> pour <strong>{{ ad.price }}&euro;</strong> par nuit
+            <strong>{{ ad.rooms }} pièces </strong> pour <strong>{{ ad.price | number_format(2,',', ' ')}}&euro;</strong> par nuit
         </p>
-        <a href="{{ path('booking_create', {'slug': ad.slug }) }}" class="btn btn-primary btn-lg">Réserver !</a>
+        <p class="text-info h4" style="text-shadow: 3px 3px 3px rgba(0, 0, 0, 0.5);"> <i class="fas fa-map-marker-alt"></i>
+         {{ad.city}}</p>
+        <a href="{{ path('booking_create', {'slug': ad.slug }) }}" class="btn btn-primary">Réserver !</a>
         {% if app.user and app.user == ad.author %}
             <a href="{{ path('ads_edit', {'slug': ad.slug}) }}" class="btn btn-secondary">Modifier l'annonce !</a>
             <a href="{{ path('ads_delete', {'slug': ad.slug}) }}" class="btn btn-danger"
@@ -54,10 +56,41 @@
                     <span class="carousel-control-next-icon" aria-hidden="true"></span>
                     <span class="sr-only">Suivant</span>
                 </a>
+            </div>
+            <hr>
+
+            {% if ad.comments|length > 0 %}
+                <h2 class="mb-3">Commentaires de nos voyageurs</h2>
+
+                <div class="alert alert-info">
+                    <h4 class="alert-heading text-center">
+                        <div class="row align-items-center">
+                            <div class="col-md">
+                                Note globale donnée par nos voyageurs
+                            </div>
+                            <div class="col-md">
+                                {% include "partials/rating.html.twig" with {'rating': ad.AvgRatings} %}
+                                <br>
+                               <small>(Calculée sur {{ ad.comments|length }} avis)</small> 
+                            </div>
+                        </div>
+                    </h4>
                 </div>
+
+                {% for comment in ad.comments %}
+                    <div class="bg-light rounded mb-3 py-3 px-3">
+                        <strong>{{ comment.author.firstName }}</strong> a dit :
+                        <blockquote >{{ comment.content }}</blockquote>
+                        <strong>Note donnée : </strong>
+                        {% include "partials/rating.html.twig" with {'rating':comment.rating} %}
+                    </div>
+                {% endfor %}
+            {% else %}
+                <h2>Cette annonce n'a pas encore reçu de commentaires ...</h2>
+            {% endif %}
         </div>
         <div class="col">
-        {% set a = ad.author %}
+            {% set a = ad.author %}
             <div class="row">
                 <div class="col-3">
                     <a href="{{ path("user_show", {'slug':a.slug}) }}">

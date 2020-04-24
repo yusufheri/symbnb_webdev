@@ -18,5 +18,7 @@ function updateCounter() {
     const count = +$('#ad_images div.form-group').length;
     $('#widgets-counter').val(count);
 }
+
+
 updateCounter();
 handleDeleteButtons();

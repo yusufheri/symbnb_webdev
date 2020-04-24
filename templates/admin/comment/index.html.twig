@@ -1,0 +1,46 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Gestion des commentaires!{% endblock %}
+
+{% block body %}
+    <div class="container-fluid">
+        <h1 class="my-5">Gestion des commentaires</h1>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Date</th>
+                <th>Auteur</th>
+                <th class="text-center">Commentaire</th>
+                <th class="text-center">Note</th>
+                <th>Annonce</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% set i = 0 %}
+            {% for comment in comments %}
+                <tr>
+                    {% set i = i+1 %}
+                    <td>{{i}}</td>
+                    <td>{{comment.createdAt | date('d/m/Y H:i')}}</td>
+                    <td>
+                        <img src="{{ comment.author.picture }}" alt="Avatar de {{comment.author.fullName}}" class="avatar avatar-micro">
+                        {{comment.author.fullName}}
+                    </td>                    
+                    <td>{{comment.content}}</td>
+                    <td class="text-center">
+                        <span class="badge badge-dark">{{comment.ad.AvgRatings | number_format(0,',', ' ')}}</span>
+                    </td>
+                    <td>{{ comment.ad.title }}</td>
+                    <td>
+                        <a href="{{ path('admin_comment_edit', {id : comment.id}) }}" class="btn btn-primary"><i class="fas fa-edit"></i></a>
+                        <a href="{{ path('admin_comment_delete', {id : comment.id}) }}" onclick="return confirm('Voulez-vous supprimer ce commentaire ?');" class="btn btn-danger"><i class="fas fa-trash"></i></a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</div>
+{% endblock %}
