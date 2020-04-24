@@ -9,17 +9,17 @@
         <thead>
             <tr>
                 <th>Id</th>
-                <th>Date</th>
-                <th>Auteur</th>
+                <th width="12%">Date</th>
+                <th width="15%">Auteur</th>
                 <th class="text-center">Commentaire</th>
                 <th class="text-center">Note</th>
                 <th>Annonce</th>
-                <th></th>
+                <th width="10%"></th>
             </tr>
         </thead>
         <tbody>
-            {% set i = 0 %}
-            {% for comment in comments %}
+            {% set i = paginator.start %}
+            {% for comment in paginator.data %}
                 <tr>
                     {% set i = i+1 %}
                     <td>{{i}}</td>
@@ -41,6 +41,8 @@
             {% endfor %}
         </tbody>
     </table>
+    
+    {{ paginator.display }}
 
 </div>
 {% endblock %}
