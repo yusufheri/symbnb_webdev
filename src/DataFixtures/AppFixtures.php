@@ -25,7 +25,7 @@ class AppFixtures extends Fixture
         $faker = Factory::create('FR-fr');  
 
         $adminRole = new Role();
-        $adminRole->setTitle('ADMIN_ROLE');
+        $adminRole->setTitle('ROLE_ADMIN');
         $manager->persist($adminRole);
 
         $adminUser = new User();
@@ -44,7 +44,7 @@ class AppFixtures extends Fixture
         $users = [];
         $genres = ['male', 'female'];
        
-        for ($j=0; $j < 10; $j++) {
+        for ($j=0; $j < 20; $j++) {
 
             $user = new User();
             $genre = $faker->randomElement($genres);
@@ -69,7 +69,7 @@ class AppFixtures extends Fixture
             $users[] = $user;
         }
 
-        for ($i= 1; $i <= 18; $i++) {
+        for ($i= 1; $i <= 30; $i++) {
             $ad = new Ad();
 
             $title = $faker->sentence();
@@ -105,7 +105,7 @@ class AppFixtures extends Fixture
             }
 
             //Gestion des reservations
-            for($j= 0; $j <= mt_rand(0, 10); $j++){
+            for($j= 1; $j <= mt_rand(0, 20); $j++){
                 $booking = new Booking();
 
                 $createdAt = $faker->dateTime('-6 months');
@@ -130,7 +130,7 @@ class AppFixtures extends Fixture
                 $manager->persist($booking);
 
                 //Gestion des commentaires
-                if(mt_rand(0,1)){
+                if(mt_rand(0,2)){
                     $comment = new Comment();
                     $comment->setAd($ad)
                             ->setAuthor($booker)
