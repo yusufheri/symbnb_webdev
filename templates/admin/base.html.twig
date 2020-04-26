@@ -4,20 +4,17 @@
         <meta charset="UTF-8">
         <title>SymBNB - {% block title %}Welcome!{% endblock %}</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="/css/select2.min.css">
-        <link rel="stylesheet" href="/css/bootstrap.min.css">
+         {{ encore_entry_link_tags('css/app') }}        
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
-        <link rel="stylesheet" href="/css/app.css">        
+            
         {% block stylesheets %}{% endblock %}
     </head>
     <body>
         {% include "admin/partials/header.html.twig" %}       
         {% block body %}{% endblock %}
         {% include "admin/partials/footer.html.twig" %}
-        <script src="/js/jquery.min.js"></script>
-        <script src="/js/popper.min.js"></script>
-        <script src="/js/bootstrap.min.js"></script>        
-        <script src="/js/select2.min.js"></script>
+        {{ encore_entry_script_tags('js/app') }}       
+        <!-- <script src="/js/select2.min.js"></script> -->
         <script>
            (function($){
                 $(document).ready(function(){
@@ -37,7 +34,7 @@
                 });
             })(jQuery);
         </script>
-        <script>
+        <!--  <script>
             $(function () {
                 $('select').each(function () {
                     $(this).select2({
@@ -47,7 +44,7 @@
                     });
                 });
             });
-        </script>
+        </script> -->
         {% block javascripts %}{% endblock %}
     </body>
 </html>

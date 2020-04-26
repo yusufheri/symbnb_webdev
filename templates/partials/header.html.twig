@@ -23,7 +23,7 @@
 
                 <div class="dropdown-menu dropdown-menu-right" aria-labellebdy="accountDropdownLink">
                     {% if is_granted('ROLE_ADMIN') %}
-                        <a href="{{ path('admin_ads_index') }}" target="_blank" class="dropdown-item">Page d'administration</a>
+                        <a href="{{ path('admin_dashboard') }}" target="_blank" class="dropdown-item">Page d'administration</a>
                         <div class="dropdown-divider"></div>
                     {% endif %}
                     <a href="{{ path('ads_create') }}" class="dropdown-item">Créer une annonce</a>
